@@ -7,19 +7,15 @@ export const chatState = createContext({
 });
 
 const ChatProvider = ({ children }) => {
-  console.log('render')
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
 
   useEffect(() => {
     let user = localStorage.getItem("user");
-    if (user) {
-      setCurrentUser(JSON.parse(user));
-    }
-    if (!user) {
-      history.push("/");
-    }
+
+    setCurrentUser(JSON.parse(user));
+    if (!user) history.push("/");
   }, [history]);
 
   return (

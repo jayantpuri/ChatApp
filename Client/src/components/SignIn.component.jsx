@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { API_URL } from "../utils";
+import { chatState } from "../contexts/chatContext.component";
+import { useContext } from "react";
 import {
   VStack,
   FormControl,
@@ -17,6 +19,9 @@ import {
 const SignIn = () => {
   const history = useHistory();
   const toast = useToast();
+
+  const {setCurrentUser}  = useContext(chatState);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -56,8 +61,8 @@ const SignIn = () => {
 
       setLoading(false);
       localStorage.setItem("user", JSON.stringify(data));
+      setCurrentUser(data);
       history.push("/chats");
-      
     } catch (error) {
       toast({
         title: "Error",

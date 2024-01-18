@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { chatState } from "../contexts/chatContext.component";
+import UserList from "./userList.component";
 import {
   Container,
   Box,
@@ -8,6 +9,7 @@ import {
   Button,
   Tooltip,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import SideBar from "./SideBar.component";
@@ -27,11 +29,38 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const { currentUser } = useContext(chatState);
+  const { currentUser, setCurrentChat } = useContext(chatState);
 
   const [userList, setUserList] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const createChat = async (userId, userName) => {
+    try {
+      const { data } = await axios.post(
+        `${API_URL}/api/chat/createSingleChat`,
+        { chatName: userName, userId: userId },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+      setCurrentChat(data);
+      console.log(data);
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error creating chat",
+        description: "Cannot create users at this time",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
 
   const searchUser = async () => {
     setLoading(true);
@@ -39,13 +68,12 @@ const Header = () => {
     try {
       const { data } = await axios.get(`${API_URL}/api/user/findUser`, {
         headers: {
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${currentUser.token}`,
         },
         params: { search: searchQuery },
       });
 
       setUserList(data);
-      console.log(data);
       setLoading(false);
     } catch (error) {
       toast({
@@ -54,6 +82,7 @@ const Header = () => {
         status: "error",
         duration: 5000,
         isClosable: true,
+        position: "top-left",
       });
       setLoading(false);
     }
@@ -80,7 +109,7 @@ const Header = () => {
           >
             <SearchIcon />
             <Text fontSize="1xl" fontWeight="500" color="white">
-              {currentUser.name}
+              {currentUser && currentUser.name}
             </Text>
           </Button>
         </Tooltip>
@@ -121,13 +150,20 @@ const Header = () => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  onClose();
                   searchUser();
                 }}
               >
                 Search
               </Button>
             </Box>
+
+            {loading === true ? (
+              <Spinner />
+            ) : (
+              userList?.map((user) => (
+                <UserList key={user._id} user={user} handleClick={createChat} />
+              ))
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

@@ -7,7 +7,7 @@ const createSingleChat = asyncHandler(async (req, res) => {
 
   if (!chatName || !userId) {
     res.status(400);
-    throw new Error("user or chatname not found");
+    throw new Error("user or chatname missing");
   }
 
   const existingChat = await Chat.findOne({
