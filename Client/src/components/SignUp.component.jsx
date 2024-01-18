@@ -72,8 +72,11 @@ const SignUp = () => {
         { name, email, password },
         { headers: { "Content-Type": "application/json" } }
       );
+
       setLoading(false);
+      localStorage.setItem("user", data);
       history.push("/chats");
+
     } catch (error) {
       toast({
         title: "eror",

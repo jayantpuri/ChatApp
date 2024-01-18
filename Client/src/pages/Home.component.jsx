@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Tabs,
   TabList,
@@ -12,6 +13,15 @@ import SignUp from "../components/SignUp.component";
 import SignIn from "../components/SignIn.component";
 
 const Home = () => {
+  const history = useHistory();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      history.push("/chats");
+    }
+  }, [history]);
+
   return (
     <Container
       maxW={{ base: "70vw", md: "70vw", lg: "40vw" }}

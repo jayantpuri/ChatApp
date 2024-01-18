@@ -53,9 +53,11 @@ const SignIn = () => {
         },
         { headers: { "Content-Type": "application/json" } }
       );
+
       setLoading(false);
+      localStorage.setItem("user", JSON.stringify(data));
       history.push("/chats");
-      console.log(data);
+      
     } catch (error) {
       toast({
         title: "Error",
