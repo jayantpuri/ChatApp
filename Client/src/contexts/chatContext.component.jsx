@@ -4,13 +4,16 @@ import { useHistory } from "react-router-dom";
 export const chatState = createContext({
   currentUser: null,
   currentChat: null,
+  ChatsArray: null,
+  fetchChats: false,
 });
 
 const ChatProvider = ({ children }) => {
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
-
+  const [chatsArray, setChatsArray] = useState(null);
+  const [fetchChats, setFetchChats] = useState(false);
   useEffect(() => {
     let user = localStorage.getItem("user");
 
@@ -20,7 +23,16 @@ const ChatProvider = ({ children }) => {
 
   return (
     <chatState.Provider
-      value={{ currentUser, currentChat, setCurrentChat, setCurrentUser }}
+      value={{
+        currentUser,
+        currentChat,
+        setCurrentChat,
+        setCurrentUser,
+        chatsArray,
+        setChatsArray,
+        fetchChats,
+        setFetchChats,
+      }}
     >
       {children}
     </chatState.Provider>

@@ -1,6 +1,11 @@
 import React, { useState, useContext } from "react";
 import { chatState } from "../contexts/chatContext.component";
+import { useHistory } from "react-router-dom";
 import UserList from "./userList.component";
+import ProfileModal from "./ProfileModal.component";
+import axios from "axios";
+import { API_URL } from "../utils";
+import { SearchIcon, BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Container,
   Box,
@@ -10,12 +15,12 @@ import {
   Tooltip,
   useToast,
   Spinner,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
-import SideBar from "./SideBar.component";
-import axios from "axios";
-import { API_URL } from "../utils";
-import {
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -28,8 +33,9 @@ import {
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const history = useHistory();
 
-  const { currentUser, setCurrentChat } = useContext(chatState);
+  const { currentUser, setCurrentChat , setCurrentUser} = useContext(chatState);
 
   const [userList, setUserList] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -87,6 +93,12 @@ const Header = () => {
       setLoading(false);
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    setCurrentUser("");
+    history.push("/");
+  };
   return (
     <Container minW="100vw" height="7vh" bg="#69779b">
       <Box
@@ -119,10 +131,27 @@ const Header = () => {
             Talk-A-Tive
           </Text>
         </Box>
-        <Box>
-          <Text fontSize="4xl" fontWeight="500" color="white">
-            Modal
-          </Text>
+        <Box display="flex" alignItems="center" gap="15px">
+          <BellIcon />
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <Avatar
+                src={currentUser.profile}
+                size="small"
+                cursor="pointer"
+                name={currentUser.name}
+                bg="none"
+                color="#69779b"
+              />
+            </MenuButton>
+            <MenuList>
+              <ProfileModal>
+                <MenuItem>Profile</MenuItem>
+              </ProfileModal>
+              <MenuDivider />
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
       </Box>
 

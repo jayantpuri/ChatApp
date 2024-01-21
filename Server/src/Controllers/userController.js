@@ -24,6 +24,7 @@ const signIn = asyncHandler(async (req, res) => {
     _id: existingUser._id,
     name: existingUser.name,
     picture: existingUser.profilePicture,
+    email: existingUser.email,
     token: generateToken(existingUser.id),
   });
 });
