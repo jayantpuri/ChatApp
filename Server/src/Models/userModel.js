@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, trim: true },
     profilePicture: {
       type: String,
-      default: "https://icon-library.com/icon/android-user-icon-4.html.html",
+      default: "https://icon-library.com/icon/android-user-icon-4.html",
     },
   },
   {

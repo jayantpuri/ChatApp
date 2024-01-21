@@ -35,7 +35,13 @@ const Header = () => {
   const toast = useToast();
   const history = useHistory();
 
-  const { currentUser, setCurrentChat , setCurrentUser} = useContext(chatState);
+  const {
+    currentUser,
+    setCurrentChat,
+    setCurrentUser,
+    setFetchChats,
+    fetchChats,
+  } = useContext(chatState);
 
   const [userList, setUserList] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,7 +60,7 @@ const Header = () => {
         }
       );
       setCurrentChat(data);
-      console.log(data);
+      setFetchChats(!fetchChats);
       onClose();
     } catch (error) {
       toast({
@@ -132,7 +138,7 @@ const Header = () => {
           </Text>
         </Box>
         <Box display="flex" alignItems="center" gap="15px">
-          <BellIcon />
+          <BellIcon boxSize={8} />
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Avatar
