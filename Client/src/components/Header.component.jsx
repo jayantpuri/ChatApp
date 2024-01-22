@@ -47,11 +47,11 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const createChat = async (userId, userName) => {
+  const createChat = async (user) => {
     try {
       const { data } = await axios.post(
         `${API_URL}/api/chat/createSingleChat`,
-        { chatName: userName, userId: userId },
+        { chatName: user.name, userId: user._id },
         {
           headers: {
             "Content-type": "application/json",

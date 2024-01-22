@@ -4,7 +4,7 @@ import { Box, Avatar, Text } from "@chakra-ui/react";
 const UserList = ({ user, handleClick }) => {
   return (
     <Box
-      onClick={() => handleClick(user._id, user.name)}
+      onClick={() => handleClick(user)}
       cursor="pointer"
       mx="auto"
       maxW="90%"
