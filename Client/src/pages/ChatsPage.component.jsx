@@ -8,7 +8,7 @@ const ChatsPage = () => {
   return (
     <div>
       <Header />
-      <Box display='flex' width='100%' mt='2vh' height='90vh'>
+      <Box padding={3} display='flex' width='100%' mt='2vh' height='90vh' gap="2vw">
         <ChatList />
         <MainChat />
       </Box>

@@ -3,7 +3,7 @@ import { chatState } from "../contexts/chatContext.component";
 import axios from "axios";
 import { API_URL } from "../utils";
 import UserList from "./userList.component";
-import { CloseIcon } from "@chakra-ui/icons";
+import UserTag from "./userTag.component";
 import {
   Box,
   Text,
@@ -21,9 +21,6 @@ import {
   Input,
   FormControl,
   useToast,
-  Tag,
-  TagLabel,
-  TagRightIcon,
 } from "@chakra-ui/react";
 
 const ChatList = () => {
@@ -154,11 +151,19 @@ const ChatList = () => {
       );
 
       setFetchChats(!fetchChats);
+      setCurrentChat(data);
       setGroupMembers([]);
       setGroupName("");
       setSearchQuery("");
       setUserList(null);
       onClose();
+      toast({
+        title: "New group chat created",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
     } catch (error) {
       toast({
         title: "Error creating group chat",
@@ -246,19 +251,13 @@ const ChatList = () => {
               />
             </FormControl>
             <Box display="flex" flexWrap="wrap" gap="10px">
-              {groupMembers?.map((member) => {
-                return (
-                  <Tag size="lg" bg="#f0ece2" color="#010101">
-                    <TagLabel>{member.name}</TagLabel>
-                    <TagRightIcon
-                      cursor="pointer"
-                      as={CloseIcon}
-                      boxSize="10px"
-                      onClick={() => removeUser(member)}
-                    />
-                  </Tag>
-                );
-              })}
+              {groupMembers?.map((member) => (
+                <UserTag
+                  key={member._id}
+                  user={member}
+                  removeUser={removeUser}
+                />
+              ))}
             </Box>
             <Box width="100%">
               {loading === false ? (

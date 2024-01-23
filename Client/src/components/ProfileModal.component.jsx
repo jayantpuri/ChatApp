@@ -13,9 +13,8 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
-const ProfileModal = ({ children }) => {
+const ProfileModal = ({ children , user}) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const { currentUser } = useContext(chatState);
   return (
     <Fragment>
       <span onClick={() => onOpen()}>{children}</span>
@@ -23,7 +22,7 @@ const ProfileModal = ({ children }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{currentUser && currentUser.name}</ModalHeader>
+          <ModalHeader>{user && user.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody
             display="flex"
@@ -31,9 +30,9 @@ const ProfileModal = ({ children }) => {
             alignItems="center"
             gap="30px"
           >
-            <Avatar src={currentUser.profile | ""} size="2xl" />
+            <Avatar src={user.profile | ""} size="2xl" />
             <Text fontSize="xl" fontWeight="400">
-              Email : {currentUser && currentUser.email}
+              Email : {user && user.email}
             </Text>
           </ModalBody>
           <ModalFooter />

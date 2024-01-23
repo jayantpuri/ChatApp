@@ -151,7 +151,7 @@ const Header = () => {
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal>
+              <ProfileModal user={currentUser}>
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />

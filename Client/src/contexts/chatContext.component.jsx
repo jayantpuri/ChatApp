@@ -14,6 +14,7 @@ const ChatProvider = ({ children }) => {
   const [currentChat, setCurrentChat] = useState({});
   const [chatsArray, setChatsArray] = useState(null);
   const [fetchChats, setFetchChats] = useState(false);
+  
   useEffect(() => {
     let user = localStorage.getItem("user");
 
