@@ -142,10 +142,10 @@ const Header = () => {
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Avatar
-                src={currentUser.profile}
+                src={currentUser?.profile | " "}
                 size="small"
                 cursor="pointer"
-                name={currentUser.name}
+                name={currentUser?.name}
                 bg="none"
                 color="#69779b"
               />

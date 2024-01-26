@@ -56,6 +56,7 @@ const getAllMessages = expressAsyncHandler(async (req, res) => {
       });
 
     if (!chatMessages) {
+      console.log("not message found")
       res.status(400);
       throw new Error("The chat does not exist");
     }

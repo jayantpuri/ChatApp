@@ -1,6 +1,5 @@
-import React, { useContext, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useDisclosure } from "@chakra-ui/react";
-import { chatState } from "../contexts/chatContext.component";
 import {
   Modal,
   ModalOverlay,
@@ -30,7 +29,7 @@ const ProfileModal = ({ children , user}) => {
             alignItems="center"
             gap="30px"
           >
-            <Avatar src={user.profile | ""} size="2xl" />
+            <Avatar src={user?.profile | ""} size="2xl" />
             <Text fontSize="xl" fontWeight="400">
               Email : {user && user.email}
             </Text>

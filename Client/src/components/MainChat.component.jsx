@@ -1,26 +1,106 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { chatState } from "../contexts/chatContext.component";
 import ProfileModal from "./ProfileModal.component";
 import GroupModal from "./groupModal.component";
+import Messages from "./messages.component";
 import { getOtherUser } from "../utils";
-import { Box, Text } from "@chakra-ui/react";
+import { API_URL } from "../utils";
+import axios from "axios";
+import {
+  Box,
+  Spinner,
+  Text,
+  useToast,
+  FormControl,
+  Input,
+} from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
 const MainChat = () => {
+  const toast = useToast();
   const { currentChat, currentUser } = useContext(chatState);
-  console.log(currentChat.users);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [sendMessageloading, setSendMessageLoading] = useState(false);
+  const [messageLoading, setMessageLoading] = useState(false);
 
-  const display =  currentChat.isGroupChat ? (
+  useEffect(() => {
+    fetchMessages();
+  }, [currentChat?._id]);
+
+  const display = currentChat?.isGroupChat ? (
     <GroupModal groupChat={currentChat} currentUser={currentUser}>
       <EditIcon boxSize={6} color="#010101" cursor="pointer" />
     </GroupModal>
-  ) : ( 
-    <ProfileModal user={ getOtherUser(currentChat.users, currentUser)}>
+  ) : (
+    <ProfileModal user={getOtherUser(currentChat?.users, currentUser)}>
       <EditIcon boxSize={6} color="#010101" cursor="pointer" />
     </ProfileModal>
-  )
+  );
 
-  return (
+  const fetchMessages = async () => {
+    if (currentChat === null) {
+      return;
+    }
+    setMessageLoading(true);
+    console.log("selected chat", currentChat._id);
+
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/api/message/getAllMessages/${currentChat._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setMessageLoading(false);
+      setMessages(data);
+    } catch (error) {
+      toast({
+        title: "Error fetching messages",
+        description: "Cannot fetch messages at this time",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+      setMessageLoading(false);
+    }
+  };
+
+  const sendMessage = async (e) => {
+    if (newMessage === "" || e.key !== "Enter") {
+      return;
+    }
+    setSendMessageLoading(true);
+
+    try {
+      setNewMessage("")
+      const { data } = await axios.post(
+        `${API_URL}/api/message/sendMessage`,
+        { message: newMessage, chatId: currentChat._id },
+        { headers: { Authorization: `Bearer ${currentUser.token}` } }
+      );
+      console.log(data);
+      setMessages([...messages, data]);
+      setSendMessageLoading(false);
+    } catch (error) {
+      toast({
+        title: "cannot send a message at this time",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setSendMessageLoading(false);
+    }
+  };
+
+  const load = <Spinner size="xl" color="white" />;
+
+  const content = (
     <Box
       width="100%"
       height="100%"
@@ -40,19 +120,43 @@ const MainChat = () => {
         justifyContent="space-between"
       >
         <Text fontSize="3xl">{currentChat && currentChat.chatName}</Text>
-        {currentChat!==null && display }
-        
+        {currentChat && display}
       </Box>
       <Box
         height="100%"
-        bg="#69779b"
         display="flex"
         flexDir="column"
         gap="5px"
         borderRadius="lg"
       >
         {currentChat ? (
-          <>the chat is Selected</>
+          <Box
+          borderRadius="lg"
+            height="100%"
+            display="flex"
+            justifyContent="flex-end"
+            overflowY="hidden"
+            bg="#474f63"
+            flexDir="column"
+          >
+            {messageLoading ? (
+              <Spinner size={"lg"} />
+            ) : (
+              <Messages messages={messages} currenUser={currentUser} />
+            )}
+            <FormControl p={2} onKeyDown={sendMessage} isRequired mt={3} mb={2}>
+              <Input
+                type="text"
+                variant="flush"
+                size='lg'
+                bg="#010101"
+                placeholder="Type your message here"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                _focus={{bg: "#f0ece2"}}
+              />
+            </FormControl>
+          </Box>
         ) : (
           <Text margin="auto" fontSize="3xl">
             Click on a chat to start chatting
@@ -61,6 +165,12 @@ const MainChat = () => {
       </Box>
     </Box>
   );
+
+  if (!currentUser && !currentChat) {
+    return load;
+  } else {
+    return content;
+  }
 };
 
 export default MainChat;

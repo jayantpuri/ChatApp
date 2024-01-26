@@ -37,6 +37,7 @@ const ChatList = () => {
     setFetchChats,
   } = useContext(chatState);
 
+  const [loggedUser, setLoggedUser] = useState("");
   const [loading, setLoading] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupMembers, setGroupMembers] = useState([]);
@@ -44,14 +45,25 @@ const ChatList = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (
+      currentUser === "" ||
+      currentUser === undefined ||
+      currentUser === null
+    ) {
+      let user = localStorage.getItem("user");
+      setLoggedUser(JSON.parse(user));
+    } else {
+      setLoggedUser(currentUser);
+    }
+
     fetchChatList();
-  }, [fetchChats]);
+  }, [fetchChats, loggedUser?._id]);
 
   const fetchChatList = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`${API_URL}/api/chat/getAllChats`, {
-        headers: { Authorization: `Bearer ${currentUser.token}` },
+        headers: { Authorization: `Bearer ${loggedUser.token}` },
       });
       setLoading(false);
       setChatsArray(data);
@@ -70,7 +82,7 @@ const ChatList = () => {
     try {
       const { data } = await axios.get(`${API_URL}/api/user/findUser`, {
         headers: {
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: `Bearer ${loggedUser.token}`,
         },
         params: { search: query },
       });
@@ -144,7 +156,7 @@ const ChatList = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${currentUser.token}`,
+            Authorization: `Bearer ${loggedUser.token}`,
             "Content-Type": "application/json",
           },
         }
@@ -202,7 +214,7 @@ const ChatList = () => {
         </Button>
       </Box>
       <Stack p={3} width="100%" height="95%" bg="#f0ece2">
-        {loading ? (
+        {loading === true ? (
           <Spinner />
         ) : (
           chatsArray?.map((chat) => (
@@ -213,12 +225,17 @@ const ChatList = () => {
               borderRadius="lg"
               cursor="pointer"
               mb={3}
+              display="flex"
+              flexDir="column"
+              gap="5px"
               bg={chat === currentChat ? "#010101" : "white"}
               color={chat === currentChat ? "#acdbdf" : "##69779b"}
               onClick={() => setCurrentChat(chat)}
             >
               {chat.chatName}
-              {chat.lastMessage}
+              <Text fontFamily="sans-serif" fontSize="12px">
+                {chat.lastMessage?.content}
+              </Text>
             </Box>
           ))
         )}

@@ -10,9 +10,9 @@ export const chatState = createContext({
 
 const ChatProvider = ({ children }) => {
   const history = useHistory();
-  const [currentUser, setCurrentUser] = useState("");
-  const [currentChat, setCurrentChat] = useState({});
-  const [chatsArray, setChatsArray] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [chatsArray, setChatsArray] = useState([]);
   const [fetchChats, setFetchChats] = useState(false);
   
   useEffect(() => {
