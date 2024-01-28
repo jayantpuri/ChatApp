@@ -1,5 +1,7 @@
 const app = require("./expressServer");
 const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoConnection = require("../src/Config/db");
 
@@ -12,6 +14,35 @@ function startServer() {
 
   server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
+  });
+
+  const io = new Server(server, {
+    pingTimeout: 60000,
+    cors: {
+      origin: "http://localhost:3000",
+    },
+  });
+
+  io.on("connection", (socket) => {
+    console.log("connected to socket io");
+
+    socket.on("create user room", (user) => {
+      socket.join(user._id);
+      socket.emit("connected");
+    });
+
+    socket.on("join chat", (chat) => {
+      socket.join(chat._id);
+      console.log("user joined", chat._id);
+    });
+
+    socket.on("new Message", (message) => {
+      const chatUsers = message.chat.users;
+
+      chatUsers.forEach((user) => {
+        socket.in(user._id).emit( "message Recieved", message);
+      });
+    });                    
   });
 }
 

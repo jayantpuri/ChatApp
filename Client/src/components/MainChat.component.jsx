@@ -6,6 +6,7 @@ import Messages from "./messages.component";
 import { getOtherUser } from "../utils";
 import { API_URL } from "../utils";
 import axios from "axios";
+import io from "socket.io-client";
 import {
   Box,
   Spinner,
@@ -16,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
+let socket;
+
 const MainChat = () => {
   const toast = useToast();
   const { currentChat, currentUser } = useContext(chatState);
@@ -23,10 +26,32 @@ const MainChat = () => {
   const [newMessage, setNewMessage] = useState("");
   const [sendMessageloading, setSendMessageLoading] = useState(false);
   const [messageLoading, setMessageLoading] = useState(false);
+  const [socketConnected, setSocketConnected] = useState(false);
 
   useEffect(() => {
+    socket = io(API_URL);
+    if (currentUser) {
+      socket.emit("create user room", currentUser);
+    }
+    socket.on("connected", () => {
+      setSocketConnected(true);
+    });
+  }, [currentUser?._id]);
+
+  useEffect(() => {
+    currentChat && socket.emit("join chat", currentChat);
     fetchMessages();
   }, [currentChat?._id]);
+
+  useEffect(() => {
+    socket.on("message Recieved", (mess) => {
+      if (mess.chat._id === currentChat?._id) {
+        setMessages([...messages, mess]);
+      } else {
+        // show notification
+      }
+    });
+  });
 
   const display = currentChat?.isGroupChat ? (
     <GroupModal groupChat={currentChat} currentUser={currentUser}>
@@ -43,7 +68,6 @@ const MainChat = () => {
       return;
     }
     setMessageLoading(true);
-    console.log("selected chat", currentChat._id);
 
     try {
       const { data } = await axios.get(
@@ -77,13 +101,13 @@ const MainChat = () => {
     setSendMessageLoading(true);
 
     try {
-      setNewMessage("")
+      setNewMessage("");
       const { data } = await axios.post(
         `${API_URL}/api/message/sendMessage`,
         { message: newMessage, chatId: currentChat._id },
         { headers: { Authorization: `Bearer ${currentUser.token}` } }
       );
-      console.log(data);
+      socket.emit("new Message", data);
       setMessages([...messages, data]);
       setSendMessageLoading(false);
     } catch (error) {
@@ -131,7 +155,7 @@ const MainChat = () => {
       >
         {currentChat ? (
           <Box
-          borderRadius="lg"
+            borderRadius="lg"
             height="100%"
             display="flex"
             justifyContent="flex-end"
@@ -145,15 +169,16 @@ const MainChat = () => {
               <Messages messages={messages} currenUser={currentUser} />
             )}
             <FormControl p={2} onKeyDown={sendMessage} isRequired mt={3} mb={2}>
+              {sendMessageloading && <Spinner />}
               <Input
                 type="text"
                 variant="flush"
-                size='lg'
+                size="lg"
                 bg="#010101"
                 placeholder="Type your message here"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                _focus={{bg: "#f0ece2"}}
+                _focus={{ bg: "#f0ece2" }}
               />
             </FormControl>
           </Box>
