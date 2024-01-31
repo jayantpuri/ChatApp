@@ -30,7 +30,7 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
     const fullMessage = await Message.findOne({ _id: newMessage._id })
       .populate({
         path: "chat",
-        select: "users",
+        select: "users chatName isGroupChat",
         populate: { path: "users", select: "name profilePicture" },
       })
       .populate({ path: "sender", select: "name profilePicture" });
@@ -53,6 +53,7 @@ const getAllMessages = expressAsyncHandler(async (req, res) => {
       })
       .populate({
         path: "chat",
+
       });
 
     if (!chatMessages) {
