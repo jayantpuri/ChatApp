@@ -136,7 +136,7 @@ const Header = () => {
 
         <Box>
           <Text fontSize="4xl" fontWeight="500" color="white">
-            Talk-A-Tive
+          Swift - Chat
           </Text>
         </Box>
         <Box display="flex" alignItems="center" gap="15px">

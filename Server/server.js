@@ -3,7 +3,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const mongoConnection = require("../src/Config/db");
+const mongoConnection = require("./src/Config/db");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
