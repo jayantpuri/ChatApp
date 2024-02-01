@@ -4,7 +4,6 @@ import axios from "axios";
 import { API_URL } from "../utils";
 import UserList from "./userList.component";
 import UserTag from "./userTag.component";
-import io from "socket.io-client";
 import {
   Box,
   Text,
@@ -24,7 +23,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-let socket;
 
 const ChatList = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,11 +56,6 @@ const ChatList = () => {
     } else {
       setLoggedUser(currentUser);
     }
-
-    // if (loggedUser) {
-    //   socket = io(API_URL);
-    //   socket.emit("create user room", loggedUser);
-    // }
 
     fetchChatList();
   }, [fetchChats, loggedUser?._id]);

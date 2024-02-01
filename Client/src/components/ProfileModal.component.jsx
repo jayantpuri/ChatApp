@@ -29,7 +29,7 @@ const ProfileModal = ({ children , user}) => {
             alignItems="center"
             gap="30px"
           >
-            <Avatar src={user?.profile | ""} size="2xl" />
+            <Avatar src={user?.picture} size="2xl" />
             <Text fontSize="xl" fontWeight="400">
               Email : {user && user.email}
             </Text>

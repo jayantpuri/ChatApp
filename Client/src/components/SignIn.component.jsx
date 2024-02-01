@@ -20,7 +20,7 @@ const SignIn = () => {
   const history = useHistory();
   const toast = useToast();
 
-  const {setCurrentUser}  = useContext(chatState);
+  const { setCurrentUser } = useContext(chatState);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,7 +78,6 @@ const SignIn = () => {
   const getGuestCred = () => {
     setEmail("guestUser@guest.com");
     setPassword("guestPassword");
-    // make api request to login
   };
 
   return (

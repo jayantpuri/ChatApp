@@ -3,6 +3,7 @@ import { chatState } from "../contexts/chatContext.component";
 import { useHistory } from "react-router-dom";
 import UserList from "./userList.component";
 import ProfileModal from "./ProfileModal.component";
+import NotificationModal from "./NotificationModal.component";
 import axios from "axios";
 import { API_URL } from "../utils";
 import { SearchIcon, BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
@@ -41,6 +42,7 @@ const Header = () => {
     setCurrentUser,
     setFetchChats,
     fetchChats,
+    notification,
   } = useContext(chatState);
 
   const [userList, setUserList] = useState(null);
@@ -127,7 +129,7 @@ const Header = () => {
           >
             <SearchIcon />
             <Text fontSize="1xl" fontWeight="500" color="white">
-              {currentUser && currentUser.name}
+              Search users
             </Text>
           </Button>
         </Tooltip>
@@ -138,12 +140,14 @@ const Header = () => {
           </Text>
         </Box>
         <Box display="flex" alignItems="center" gap="15px">
-          <BellIcon boxSize={8} />
+          <NotificationModal notifications={notification}>
+            <BellIcon boxSize={8} />
+          </NotificationModal>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               <Avatar
-                src={currentUser?.profile | " "}
-                size="small"
+                src={currentUser?.picture}
+                size="sm"
                 cursor="pointer"
                 name={currentUser?.name}
                 bg="none"

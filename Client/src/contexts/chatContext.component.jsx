@@ -6,6 +6,7 @@ export const chatState = createContext({
   currentChat: null,
   ChatsArray: null,
   fetchChats: false,
+  notification: [],
 });
 
 const ChatProvider = ({ children }) => {
@@ -14,7 +15,8 @@ const ChatProvider = ({ children }) => {
   const [currentChat, setCurrentChat] = useState(null);
   const [chatsArray, setChatsArray] = useState([]);
   const [fetchChats, setFetchChats] = useState(false);
-  
+  const [notification, setNotification] = useState([]);
+
   useEffect(() => {
     let user = localStorage.getItem("user");
 
@@ -33,6 +35,8 @@ const ChatProvider = ({ children }) => {
         setChatsArray,
         fetchChats,
         setFetchChats,
+        notification,
+        setNotification,
       }}
     >
       {children}

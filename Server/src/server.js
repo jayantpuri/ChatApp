@@ -24,8 +24,6 @@ function startServer() {
   });
 
   io.on("connection", (socket) => {
-    console.log("connected to socket io");
-
     socket.on("create user room", (user) => {
       socket.join(user._id);
       socket.emit("connected");
@@ -33,16 +31,15 @@ function startServer() {
 
     socket.on("join chat", (chat) => {
       socket.join(chat._id);
-      console.log("user joined", chat._id);
     });
 
     socket.on("new Message", (message) => {
       const chatUsers = message.chat.users;
 
       chatUsers.forEach((user) => {
-        socket.in(user._id).emit( "message Recieved", message);
+        socket.in(user._id).emit("message Recieved", message);
       });
-    });                    
+    });
   });
 }
 

@@ -21,7 +21,8 @@ let socket;
 
 const MainChat = () => {
   const toast = useToast();
-  const { currentChat, currentUser } = useContext(chatState);
+  const { currentChat, currentUser, setNotification, notification } =
+    useContext(chatState);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sendMessageloading, setSendMessageLoading] = useState(false);
@@ -48,7 +49,7 @@ const MainChat = () => {
       if (mess.chat._id === currentChat?._id) {
         setMessages([...messages, mess]);
       } else {
-        // show notification
+        setNotification([...notification, mess]);
       }
     });
   });
