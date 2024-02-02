@@ -27,17 +27,17 @@ app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
 
 // ----------------Deployment-------------------------
-const dir = path.resolve();
-if (process.env.NODE_ENV === "production") {
-  console.log('yes')
-  app.use(express.static(path.join(dir, "Client/build")));
+// const dir = path.resolve();
+// if (process.env.NODE_ENV === "production") {
+//   console.log('yes')
+//   app.use(express.static(path.join(dir, "Client/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(dir, "Client", "build", "index.html"));
-  });
-} else {
-  console.log("nope");
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(dir, "Client", "build", "index.html"));
+//   });
+// } else {
+//   console.log("nope");
+// }
 
 // ----------------Deployment-------------------------
 
