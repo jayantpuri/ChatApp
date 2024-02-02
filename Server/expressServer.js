@@ -10,10 +10,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: ["https://swift-chat-theta.vercel.app"],
-  methods: ["POST", "GET", "DELETE", "PUT"],
-}));
+app.use(cors();
 
 app.get("/", (req, res) => {
   res.json("Server is running");
