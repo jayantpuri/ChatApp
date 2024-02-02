@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "*",
+  origin: ["https://swift-chat-theta.vercel.app"],
   methods: ["POST", "GET", "DELETE", "PUT"],
 }));
 
