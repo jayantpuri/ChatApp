@@ -56,13 +56,7 @@ const SignIn = () => {
           email,
           password,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST,PATCH,GET,PUT",
-          },
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
 
       setLoading(false);
