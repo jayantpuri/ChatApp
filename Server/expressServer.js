@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://swift-chat-theta.vercel.app"],
   })
 );
 
@@ -30,7 +30,7 @@ app.use("/api/message", messageRouter);
 // const dir = path.resolve();
 // if (process.env.NODE_ENV === "production") {
 //   console.log('yes')
-//   app.use(express.static(path.join(dir, "Client/build")));
+//   app.use(express.static(path.join(dir, "/Client/build")));
 
 //   app.get("*", (req, res) => {
 //     res.sendFile(path.join(dir, "Client", "build", "index.html"));
