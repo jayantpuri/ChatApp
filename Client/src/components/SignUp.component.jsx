@@ -76,7 +76,13 @@ const SignUp = () => {
       const { data } = await axios.post(
         `${API_URL}/api/user/signUp`,
         { name, email, password, profilePicture },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST,PATCH,GET,OPTIONS",
+          },
+        }
       );
 
       setLoading(false);
@@ -117,13 +123,13 @@ const SignUp = () => {
 
       await axios
         .post(url, data)
-        .then((res) => res.data['secure_url'])
+        .then((res) => res.data["secure_url"])
         .then((data) => {
           setProfilePicture(data.toString());
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           setLoading(false);
         });
     } else {
@@ -217,7 +223,6 @@ const SignUp = () => {
 
         <Input
           type="file"
-        
           accept="image/*"
           placeholder="No file chosen"
           onChange={(e) => {
