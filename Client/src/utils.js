@@ -1,4 +1,4 @@
-export const API_URL = "http://localhost:9000";
+export const API_URL = "https://chat-app-mu-inky.vercel.app";
 
 export function getOtherUser(users, currentUser) {
   if (!users) {
