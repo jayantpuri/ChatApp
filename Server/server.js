@@ -20,7 +20,7 @@ const io = new Server(server, {
   cors: {
     origin: "https://swift-chat-theta.vercel.app",
   },
-}); 
+});
 
 io.on("connection", (socket) => {
   socket.on("create user room", (user) => {
