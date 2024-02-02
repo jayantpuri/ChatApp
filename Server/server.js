@@ -6,6 +6,12 @@ const dotenv = require("dotenv");
 const mongoConnection = require("./src/Config/db");
 
 dotenv.config();
+
+app.use(cors({
+  origin: "*",
+  methods: ["POST", "GET", "DELETE", "PUT"],
+}));
+
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 

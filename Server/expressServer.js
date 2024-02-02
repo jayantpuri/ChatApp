@@ -10,24 +10,33 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["POST", "GET", "DELETE", "PUT"],
+}));
 
 app.use(express.json());
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
 
-// ----------------Deployment-------------------------
-const dir = path.resolve();
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(dir, "/Client/build")));
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(dir, "Client", "build", "index.html"));
-  });
-} else {
-  console.log("nope");
-}
+// ----------------Deployment-------------------------
+// const dir = path.resolve();
+// if (process.env.NODE_ENV === "production") {
+//   console.log('yes')
+//   app.use(express.static(path.join(dir, "client/build")));
+
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(dir, "client/build", "index.html"));
+//   });
+// } else {
+//   console.log("nope");
+// }
+
 // ----------------Deployment-------------------------
 
 app.use(notFound);
