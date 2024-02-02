@@ -8,7 +8,6 @@ const mongoConnection = require("./src/Config/db");
 dotenv.config();
 
 app.use(cors());
-
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 

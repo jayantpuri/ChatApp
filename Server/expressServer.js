@@ -12,14 +12,14 @@ const app = express();
 
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.json("Server is running");
+});
 app.use(express.json());
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
 
 // ----------------Deployment-------------------------
 // const dir = path.resolve();
