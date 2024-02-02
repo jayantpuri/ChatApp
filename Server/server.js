@@ -20,7 +20,7 @@ function startServer() {
   const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-      origin: "http://localhost:3000",
+      origin: "https://swift-chat-theta.vercel.app",
     },
   });
 
