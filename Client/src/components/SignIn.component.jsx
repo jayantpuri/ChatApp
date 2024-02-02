@@ -56,7 +56,12 @@ const SignIn = () => {
           email,
           password,
         },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       );
 
       setLoading(false);

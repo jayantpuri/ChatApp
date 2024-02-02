@@ -10,10 +10,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: "*",
-  methods: ["POST", "GET", "DELETE", "PUT"],
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use("/api/user", userRouter);
