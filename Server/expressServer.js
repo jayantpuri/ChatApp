@@ -21,7 +21,7 @@ app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
 
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.json("Server is running");
 });
 
 // ----------------Deployment-------------------------
