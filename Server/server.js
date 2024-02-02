@@ -8,7 +8,7 @@ const mongoConnection = require("./src/Config/db");
 dotenv.config();
 
 app.use(cors({
-  origin: "*",
+  origin: ["https://swift-chat-theta.vercel.app"],
   methods: ["POST", "GET", "DELETE", "PUT"],
 }));
 
