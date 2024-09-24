@@ -1,7 +1,7 @@
-#Overview: 
+# Overview: 
  Swift Chat is a real-time messaging platform designed to facilitate seamless communication between users. Built with a modern tech stack that includes React.js and Chakra UI for the frontend, and MongoDB, Express.js, and Node.js for the backend, this application allows users to engage in both one-on-one and group chats effortlessly.
 
-#Key Features:
+# Key Features:
 
 User Authentication: Users can securely sign up or sign in to their accounts, ensuring a personalized experience.
 
@@ -13,13 +13,13 @@ Real-Time Messaging: Enjoy instantaneous message delivery and updates, ensuring 
 
 User-Friendly Interface: The application boasts an intuitive and responsive design, thanks to Chakra UI, providing a pleasant user experience across devices.
 
-Technology Stack:
+# Technology Stack:
 
 Frontend: React.js, Chakra UI
 Backend: Node.js, Express.js
 Database: MongoDB
 
-#Use Cases:
+# Use Cases:
 
 Social Networking: Connect with friends and family through personal and group chats.
 Team Collaboration: Enhance productivity with dedicated group discussions for work-related topics.
