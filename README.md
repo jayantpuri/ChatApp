@@ -21,11 +21,11 @@ Database: MongoDB
 
 # Use Cases:
 
- ## Social Networking: 
+ ### Social Networking: 
    Connect with friends and family through personal and group chats.
 
-## Team Collaboration: 
+### Team Collaboration: 
    Enhance productivity with dedicated group discussions for work-related topics.
 
-## Event Planning: 
+### Event Planning: 
    Organize events by creating groups for discussions and updates.
